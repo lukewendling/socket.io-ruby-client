@@ -1,5 +1,5 @@
 require 'web_socket'
-require 'rest-client'
+require 'rest_client'
 require 'json'
 require 'parser'
 
