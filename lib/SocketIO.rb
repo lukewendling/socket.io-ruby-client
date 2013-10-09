@@ -10,7 +10,7 @@ module SocketIO
     uri = URI(uri)
     options[:path] = uri.path
     # handshake
-    response = RestClient.get "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1/"
+    response = RestClient.get "#{uri.scheme}://#{uri.host}:#{uri.port}/socket.io/1/?#{uri.query}"
     response_array = response.split(':')
     response_array = [uri] + response_array << options
     cli = Client.new(*response_array)
@@ -58,7 +58,7 @@ module SocketIO
     def connect_transport
       if @supported_transports.include? "websocket"
         scheme = @uri.scheme == "https" ? "wss" : "ws"
-        @transport = WebSocket.new("#{scheme}://#{@uri.host}:#{@uri.port}/socket.io/1/websocket/#{@session_id}", origin: @uri.to_s)
+        @transport = WebSocket.new("#{scheme}://#{@uri.host}:#{@uri.port}/socket.io/1/websocket/#{@session_id}?#{@uri.query}", origin: @uri.to_s)
         @transport.send("1::#{@path}")
       else
         raise "We only support WebSockets.. and this server doesnt like web sockets.. O NO!!"
